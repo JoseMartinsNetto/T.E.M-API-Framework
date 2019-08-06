@@ -9,7 +9,7 @@ class UploadFileController {
         try {
             const { originalname: name, size, filename: key } = req.file
 
-            const fileRequest = { name, size, key, url: `${process.env.STORAGE_URL}/uploads/${key}` }
+            const fileRequest = { name, size, key, url: `${process.env.STORAGE_URL}/${key}` }
 
             const file = await FileService.saveFromUpload(fileRequest)
             return res.status(HttpCodes.CREATED).json(file)
