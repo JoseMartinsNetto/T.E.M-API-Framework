@@ -26,6 +26,16 @@ class UploadFileController {
             return res.status(error.code).json(error.stack)
         }
     }
+
+    public async delete (req: ICustomRequest, res: Response): Promise<Response> {
+        try {
+            const { id } = req.params
+            await FileService.delete(id)
+            return res.status(HttpCodes.NO_CONTENT).send()
+        } catch (error) {
+            return res.status(error.code).json(error.stack)
+        }
+    }
 }
 
 export default new UploadFileController()

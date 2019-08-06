@@ -27,6 +27,20 @@ class FileService {
       }
     })
   }
+
+  public delete(fileId: string): Promise<void> {
+    return new Promise<void> (async (resolve, reject): Promise<void> => {
+      try {
+        const file = await File.findById(fileId)
+
+        await file.remove()
+        
+        return resolve()
+      } catch (error) {
+        return reject(HandleException.handle(error))
+      }
+    })
+  }
   
   
   public saveStringIntoFile (path: string, content: string): Promise<void> {
