@@ -6,5 +6,4 @@ export default interface ISignupRequest {
     userType?: string;
     phone: string;
     cellPhone: string;
-    categories?: string[];
 }

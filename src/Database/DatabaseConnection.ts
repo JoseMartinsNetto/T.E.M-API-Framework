@@ -1,15 +1,14 @@
 import mongoose from 'mongoose'
-import LogService from '../Services/LogService'
 
 class DatabaseConnection {
-  public async connect (): Promise<void> {
+  public async connect (): Promise<string> {
     try {
       await mongoose.connect(process.env.STRING_CONNECTION, {
         useNewUrlParser: true
       })
-      LogService.logIntoConsole('Database connected!')
+      return `MongoBd '${process.env.MONGODB_DATABASE_NAME}' database connected!`;
     } catch (error) {
-      LogService.logIntoConsole(`Error while trying to connect a database -> ${error}`)
+      return `Error while trying to connect a database -> ${error}`
     }
   }
 }
