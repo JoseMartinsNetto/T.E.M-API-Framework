@@ -5,10 +5,10 @@ import HttpCodes from '../../Services/Resources/Enums/HttpCodes'
 class HomeController {
   public async index (req: Request, res: Response): Promise<any> {
     try {
-      const USE_STATIC_FILES = process.env.USE_STATIC_FILES
-      const useStaticFiles = USE_STATIC_FILES === "true"
+      const USE_CLIENT_MODE = process.env.USE_CLIENT_MODE
+      const useClientMode = USE_CLIENT_MODE === "true"
       
-      if(useStaticFiles){
+      if(useClientMode){
         return res.sendFile(path.join(__dirname, '../', '../', '../', 'public/index.html'))
       }
 

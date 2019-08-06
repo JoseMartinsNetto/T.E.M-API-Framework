@@ -6,6 +6,7 @@ import morgan from 'morgan'
 import path from 'path'
 
 import DatabaseConnection from '../Database/DatabaseConnection'
+import LogService from '../Services/LogService';
 
 class App {
     public express: express.Application
@@ -21,6 +22,7 @@ class App {
       this.middlewares()
       this.routes()
       DatabaseConnection.connect()
+        .then((response) => LogService.logIntoConsole(response))
     }
 
     private middlewares (): void {
