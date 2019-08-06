@@ -20,7 +20,7 @@ routes.post('/api/users', AuthMiddleware, UserController.store)
 routes.put('/api/users/:id', AuthMiddleware, UserController.edit)
 
 /** Upload  for exemple */
-routes.post('/api/upload', UploadFileMiddleware, UploadFileController.upload)
+routes.post('/api/upload', AuthMiddleware, UploadFileMiddleware, UploadFileController.upload)
 
 /** Home */
 routes.get('*', HomeController.index)
