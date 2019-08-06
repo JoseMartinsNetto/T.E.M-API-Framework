@@ -1,0 +1,50 @@
+{
+  "name": "typescript-api-boilerplate",
+  "version": "1.0.0",
+  "main": "Server.js",
+  "repository": "git@github.com:jmsantosnetto/typescript-api-boilerplate.git",
+  "author": "José Martins <j.msantos.netto@gmail.com>",
+  "scripts": {
+    "prod": "pm2 start dist/Application/Server.js",
+    "dev": "nodemon src/Application/Server.ts",
+    "build": "sucrase ./src -d ./dist --transforms typescript,imports",
+    "start": "node dist/Application/Server.js",
+    "clean": "rm -rf dist/"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.5",
+    "@types/crypto-js": "^3.1.43",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.17.0",
+    "@types/jsonwebtoken": "^8.3.2",
+    "@types/mongoose": "^5.5.11",
+    "@types/morgan": "^1.7.36",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2",
+    "sucrase": "^3.10.1",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^6.4.0",
+    "axios": "^0.19.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.6.8",
+    "morgan": "^1.9.1"
+  }
+}
