@@ -17,6 +17,15 @@ class UploadFileController {
             return res.status(error.code).json(error.stack)
         }
     }
+
+    public async index (req: ICustomRequest, res: Response): Promise<Response>{
+        try {
+            const files = await FileService.getAll();
+            return res.status(HttpCodes.OK).json(files)
+        } catch (error) {
+            return res.status(error.code).json(error.stack)
+        }
+    }
 }
 
 export default new UploadFileController()

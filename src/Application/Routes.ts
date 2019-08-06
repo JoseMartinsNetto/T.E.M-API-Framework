@@ -21,6 +21,7 @@ routes.put('/api/users/:id', AuthMiddleware, UserController.edit)
 
 /** Upload  for exemple */
 routes.post('/api/upload', AuthMiddleware, UploadFileMiddleware, UploadFileController.upload)
+routes.get('/api/files', AuthMiddleware, UploadFileMiddleware, UploadFileController.index)
 
 /** Home */
 routes.get('*', HomeController.index)

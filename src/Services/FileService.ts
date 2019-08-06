@@ -16,6 +16,17 @@ class FileService {
       }
     })
   }
+
+  public getAll(): Promise<IFile[]> {
+    return new Promise<IFile[]>(async (resolve, reject): Promise<void> => {
+      try {
+        const files = await File.find()
+        return resolve(files)
+      } catch (error) {
+        return reject(HandleException.handle(error))
+      }
+    })
+  }
   
   
   public saveStringIntoFile (path: string, content: string): Promise<void> {
