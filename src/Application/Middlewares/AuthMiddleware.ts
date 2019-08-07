@@ -2,13 +2,13 @@ import jwt from 'jsonwebtoken'
 import HttpCodes from '../../Services/Resources/Enums/HttpCodes'
 import { Response, RequestHandler, NextFunction } from 'express'
 import ICustomRequest from '../../Services/Resources/Interfaces/ICustomRequest'
-import IDecodedJWT from '../../Services/Resources/Interfaces/IDecodedJWT';
+import IDecodedJWT from '../../Services/Resources/Interfaces/IDecodedJWT'
 
 class AuthMiddleware {
   public intercepter: RequestHandler
 
-  constructor () {
-    this.intercepter = (req: ICustomRequest,  res: Response, next: NextFunction) => {
+  public constructor () {
+    this.intercepter = (req: ICustomRequest, res: Response, next: NextFunction): NextFunction | Response => {
       const authHeader = req.headers.authorization
 
       if (!authHeader) {
@@ -39,7 +39,7 @@ class AuthMiddleware {
         req.userId = decoded.id
         next()
       })
-    } 
+    }
   }
 }
 

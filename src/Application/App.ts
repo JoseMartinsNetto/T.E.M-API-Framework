@@ -6,23 +6,24 @@ import morgan from 'morgan'
 import path from 'path'
 
 import DatabaseConnection from '../Database/DatabaseConnection'
-import LogService from '../Services/LogService';
+import LogService from '../Services/LogService'
 
 class App {
     public express: express.Application
+
     private useStaticFiles: boolean
 
     public constructor () {
       dotenv.config()
       const USE_STATIC_FILES = process.env.USE_STATIC_FILES
 
-      this.useStaticFiles = USE_STATIC_FILES === "true"
+      this.useStaticFiles = USE_STATIC_FILES === 'true'
       this.express = express()
 
       this.middlewares()
       this.routes()
       DatabaseConnection.connect()
-        .then((response) => LogService.logIntoConsole(response))
+        .then((response): void => LogService.logIntoConsole(response))
     }
 
     private middlewares (): void {
@@ -31,7 +32,7 @@ class App {
       this.express.use(cors())
       this.express.use(morgan('dev'))
 
-      if(this.useStaticFiles){
+      if (this.useStaticFiles) {
         this.express.use(express.static(path.join(__dirname, '../', '../', 'public')))
       }
     }

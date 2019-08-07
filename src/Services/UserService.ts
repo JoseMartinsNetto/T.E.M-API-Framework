@@ -1,6 +1,6 @@
 import ISignupRequest from './Resources/Interfaces/Request/ISignupRequest'
 import IAuthRequest from './Resources/Interfaces/Request/IAuthRequest'
-import IAuthResponse from './Resources/Interfaces/Response/IAuthResponse';
+import IAuthResponse from './Resources/Interfaces/Response/IAuthResponse'
 import IGenerateTokenParams from './Resources/Interfaces/IGenerateTokenParams'
 import IEmailRequest from './Resources/Interfaces/IEmailRequest'
 import IResetPasswordRequest from './Resources/Interfaces/Request/IResetPasswordRequest'
@@ -103,8 +103,6 @@ class UserService {
     return new Promise<IUser[]>(async (resolve, reject): Promise<void> => {
       try {
         const user = await User.findById(userId)
-
-        user.categories = []
 
         await user.save()
 
