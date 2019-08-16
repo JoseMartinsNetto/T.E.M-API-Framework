@@ -3,7 +3,6 @@ import AuthMiddleware from './Http/Middlewares/AuthMiddleware'
 import UploadFileMiddleware from './Http/Middlewares/UploadFileMiddleware'
 import AuthController from './Http/Controllers/AuthController'
 import UserController from './Http/Controllers/UserController'
-import HomeController from './Http/Controllers/HomeController'
 import UploadFileController from './Http/Controllers/UploadFileController'
 import ErrorHandlingMiddleware from './Http/Middlewares/ErrorHandlingMiddleware'
 
@@ -26,8 +25,5 @@ routes.put('/users/:id', [AuthMiddleware], UserController.edit)
 routes.post('/upload', [AuthMiddleware, UploadFileMiddleware], UploadFileController.upload)
 routes.get('/files', [AuthMiddleware, UploadFileMiddleware], UploadFileController.index)
 routes.delete('/files/:id', [AuthMiddleware], UploadFileController.delete)
-
-/** Home */
-routes.get('*', HomeController.index)
 
 export default routes
