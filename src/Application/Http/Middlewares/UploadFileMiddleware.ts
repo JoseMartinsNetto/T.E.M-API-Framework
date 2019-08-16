@@ -1,7 +1,7 @@
 import multer, { Options } from 'multer'
 import { RequestHandler } from 'express'
 import multerConfig from '../../Configs/multerConfig'
-import IMiddleware from '../../Configs/IMiddleware'
+import IMiddleware from '../../Configs/Interfaces/IMiddleware';
 
 class UploadFileMiddleware implements IMiddleware {
     public intercepter: RequestHandler;

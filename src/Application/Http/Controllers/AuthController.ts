@@ -1,9 +1,10 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import UserService from '../../../Services/UserService'
 import HttpCodes from '../HttpCodes'
+import ICustomRequest from '../../Configs/Interfaces/ICustomRequest'
 
 class AuthController {
-  public async signup (req: Request, res: Response): Promise<Response> {
+  public async signup (req: ICustomRequest, res: Response): Promise<Response> {
     try {
       const user = await UserService.signup(req.body)
       return res.status(HttpCodes.CREATED).json(user)
@@ -12,7 +13,7 @@ class AuthController {
     }
   }
 
-  public async authenticate (req: Request, res: Response): Promise<Response> {
+  public async authenticate (req: ICustomRequest, res: Response): Promise<Response> {
     try {
       const user = await UserService.authenticate(req.body)
       return res.status(HttpCodes.OK).json(user)
@@ -21,7 +22,7 @@ class AuthController {
     }
   }
 
-  public async forgotPassword (req: Request, res: Response): Promise<Response> {
+  public async forgotPassword (req: ICustomRequest, res: Response): Promise<Response> {
     try {
       const { email } = req.body
 
@@ -33,7 +34,7 @@ class AuthController {
     }
   }
 
-  public async resetPassword (req: Request, res: Response): Promise<Response> {
+  public async resetPassword (req: ICustomRequest, res: Response): Promise<Response> {
     try {
       await UserService.resetPassword(req.body)
 

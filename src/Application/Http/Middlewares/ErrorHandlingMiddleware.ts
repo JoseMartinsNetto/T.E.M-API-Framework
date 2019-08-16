@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express'
-import IMiddleware from '../../Configs/IMiddleware'
-import ICustomRequest from '../../Configs/ICustomRequest'
+import IMiddleware from '../../Configs/Interfaces/IMiddleware'
+import ICustomRequest from '../../Configs/Interfaces/ICustomRequest'
 
 class ErrorHandlingMiddleware implements IMiddleware {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

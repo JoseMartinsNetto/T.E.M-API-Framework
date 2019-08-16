@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken'
 import { Response, NextFunction } from 'express'
-import ICustomRequest from '../../Configs/ICustomRequest'
+import ICustomRequest from '../../Configs/Interfaces/ICustomRequest'
 import IDecodedJWT from '../../../Services/Resources/Interfaces/IDecodedJWT'
 import HttpCodes from '../HttpCodes'
-import IMiddleware from '../../Configs/IMiddleware'
+import IMiddleware from '../../Configs/Interfaces/IMiddleware'
 
 class AuthMiddleware implements IMiddleware {
   public intercepter (req: ICustomRequest, res: Response, next: NextFunction): NextFunction | Response | void{
