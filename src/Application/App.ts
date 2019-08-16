@@ -7,7 +7,7 @@ import path from 'path'
 
 import DatabaseConnection from '../Database/DatabaseConnection'
 import LogService from '../Services/LogService'
-import HttpCodes from '../Services/Resources/Enums/HttpCodes'
+import HttpCodes from './Http/HttpCodes'
 
 class App {
     public express: express.Application

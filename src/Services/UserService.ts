@@ -11,7 +11,7 @@ import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import EmailService from './EmailService'
 import CustomException from './Resources/Exceptions/CustomException'
-import HttpCodes from './Resources/Enums/HttpCodes'
+import HttpCodes from '../Application/Http/HttpCodes'
 import HandleException from './Resources/Exceptions/HandleException'
 import User from '../Domain/Models/User'
 

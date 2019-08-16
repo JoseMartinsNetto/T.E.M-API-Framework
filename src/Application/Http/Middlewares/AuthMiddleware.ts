@@ -1,12 +1,12 @@
 import jwt from 'jsonwebtoken'
-import HttpCodes from '../../Services/Resources/Enums/HttpCodes'
 import { Response, NextFunction } from 'express'
-import ICustomRequest from '../../Services/Resources/Interfaces/ICustomRequest'
-import IDecodedJWT from '../../Services/Resources/Interfaces/IDecodedJWT'
-import IMiddleware from '../../Services/Resources/Interfaces/IMiddleware'
+import ICustomRequest from '../../Configs/ICustomRequest'
+import IDecodedJWT from '../../../Services/Resources/Interfaces/IDecodedJWT'
+import HttpCodes from '../HttpCodes'
+import IMiddleware from '../../Configs/IMiddleware'
 
 class AuthMiddleware implements IMiddleware {
-  public intercepter (req: ICustomRequest, res: Response, next: NextFunction): NextFunction | Response {
+  public intercepter (req: ICustomRequest, res: Response, next: NextFunction): NextFunction | Response | void{
     const authHeader = req.headers.authorization
 
     if (!authHeader) {

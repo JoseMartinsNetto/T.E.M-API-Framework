@@ -1,8 +1,8 @@
 import { Response } from 'express'
-import ICustomRequest from '../../Services/Resources/Interfaces/ICustomRequest'
-import HttpCodes from '../../Services/Resources/Enums/HttpCodes'
 
-import FileService from '../../Services/FileService'
+import ICustomRequest from '../../Configs/ICustomRequest'
+import FileService from '../../../Services/FileService'
+import HttpCodes from '../HttpCodes'
 
 class UploadFileController {
   public async upload (req: ICustomRequest, res: Response): Promise<Response> {

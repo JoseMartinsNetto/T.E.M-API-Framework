@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import CustomException from './CustomException'
-import HttpCodes from '../Enums/HttpCodes'
+import HttpCodes from '../../../Application/Http/HttpCodes'
 
 class HandleException {
   public handle (error: any): CustomException {

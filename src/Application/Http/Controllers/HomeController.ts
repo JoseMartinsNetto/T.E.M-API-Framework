@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import path from 'path'
-import HttpCodes from '../../Services/Resources/Enums/HttpCodes'
+import HttpCodes from '../HttpCodes'
 
 class HomeController {
   public async index (req: Request, res: Response): Promise<void | Response> {

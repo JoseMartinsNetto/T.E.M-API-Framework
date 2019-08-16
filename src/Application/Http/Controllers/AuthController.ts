@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import UserService from '../../Services/UserService'
-import HttpCodes from '../../Services/Resources/Enums/HttpCodes'
+import UserService from '../../../Services/UserService'
+import HttpCodes from '../HttpCodes'
 
 class AuthController {
   public async signup (req: Request, res: Response): Promise<Response> {
