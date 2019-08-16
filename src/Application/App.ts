@@ -7,6 +7,7 @@ import path from 'path'
 
 import DatabaseConnection from '../Database/DatabaseConnection'
 import LogService from '../Services/LogService'
+import HttpCodes from '../Services/Resources/Enums/HttpCodes'
 
 class App {
     public express: express.Application
@@ -38,7 +39,17 @@ class App {
     }
 
     private routes (): void {
-      this.express.use(routes)
+      this.express.use('/api/v1', routes)
+      this.express.use('*', (req, res) => {
+        const USE_CLIENT_MODE = process.env.USE_CLIENT_MODE
+        const useClientMode = USE_CLIENT_MODE === 'true'
+
+        if (useClientMode) {
+          return res.sendFile(path.join(__dirname, '../', '../', '../', 'public/index.html'))
+        }
+
+        return res.status(HttpCodes.OK).json({ message: 'Hello from Api Boilerplate', see: 'https://github.com/jmsantosnetto/typescript-api-boilerplate' })
+      })
     }
 }
 
