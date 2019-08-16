@@ -1,14 +1,14 @@
 {
   "name": "typescript-api-boilerplate",
   "version": "1.0.0",
-  "main": "Server.js",
+  "main": "main.js",
   "repository": "git@github.com:jmsantosnetto/typescript-api-boilerplate.git",
   "author": "José Martins <j.msantos.netto@gmail.com>",
   "scripts": {
-    "prod": "pm2 start dist/Application/Server.js",
-    "dev": "nodemon src/Application/Server.ts",
+    "prod": "pm2 start dist/Application/main.js",
+    "dev": "nodemon src/Application/main.ts",
     "build": "sucrase ./src -d ./dist --transforms typescript,imports",
-    "start": "node dist/Application/Server.js",
+    "start": "npm run build && node dist/Application/main.js",
     "clean": "rm -rf dist/"
   },
   "devDependencies": {

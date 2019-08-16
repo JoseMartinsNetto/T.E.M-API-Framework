@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Application } from 'express'
 import cors from 'cors'
 import routes from './Routes'
 import dotenv from 'dotenv'
@@ -10,7 +10,7 @@ import LogService from '../Services/LogService'
 import HttpCodes from './Http/HttpCodes'
 
 class App {
-    public express: express.Application
+    public express: Application
 
     private useStaticFiles: boolean
 

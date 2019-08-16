@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': ['error', 'always'],
     'no-async-promise-executor': ['off'],
     'lines-between-class-members': ['off'],
-    '@typescript-eslint/explicit-function-return-type': ['off']
+    '@typescript-eslint/explicit-function-return-type': ['off'],
+    'no-new': ['off']
   }
 }
