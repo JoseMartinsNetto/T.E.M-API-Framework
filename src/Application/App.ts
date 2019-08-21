@@ -39,8 +39,8 @@ class App {
     }
 
     private routes (): void {
-      this.express.use('/api/v1', routes)
-      this.express.use('/app/*', (req, res) => {
+      this.express.use(`${process.env.API_PREFIX}/${process.env.API_CURRENT_VERSION}`, routes)
+      this.express.use(`${process.env.FRONT_PREFIX_URI}/*`, (req, res) => {
         const USE_CLIENT_MODE = process.env.USE_CLIENT_MODE
         const useClientMode = USE_CLIENT_MODE === 'true'
 
