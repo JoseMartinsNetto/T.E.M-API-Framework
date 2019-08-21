@@ -5,8 +5,6 @@ import AuthController from './Http/Controllers/AuthController'
 import UserController from './Http/Controllers/UserController'
 import UploadFileController from './Http/Controllers/UploadFileController'
 import ErrorHandlingMiddleware from './Http/Middlewares/ErrorHandlingMiddleware'
-import HttpCodes from './Http/HttpCodes'
-import path from 'path'
 
 const routes = Router()
 
@@ -27,7 +25,5 @@ routes.put('/users/:id', [AuthMiddleware], UserController.edit)
 routes.post('/upload', [AuthMiddleware, UploadFileMiddleware], UploadFileController.upload)
 routes.get('/files', [AuthMiddleware, UploadFileMiddleware], UploadFileController.index)
 routes.delete('/files/:id', [AuthMiddleware], UploadFileController.delete)
-
-// routes.get()
 
 export default routes

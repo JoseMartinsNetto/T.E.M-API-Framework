@@ -4,7 +4,7 @@ import { promisify } from 'util'
 import fs from 'fs'
 import path from 'path'
 
-const FileSchema = new Schema({
+const FileSchema = new Schema<IFile>({
   name: String,
   size: String,
   key: String,
@@ -13,8 +13,8 @@ const FileSchema = new Schema({
   timestamps: true
 })
 
-FileSchema.pre('remove', function (): Promise<void> {
-  return promisify(fs.unlink)(path.resolve(__dirname, '..', '..', '..', 'public', 'uploads', this.key))
+FileSchema.pre<IFile>('remove', function (): Promise<void> {
+  return promisify(fs.unlink)(path.resolve(__dirname, '..', '..', '..', 'public', 'files', this.key))
 })
 
 export default model<IFile>('File', FileSchema)

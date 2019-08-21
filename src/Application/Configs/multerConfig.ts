@@ -3,10 +3,10 @@ import path from 'path'
 import crypto from 'crypto'
 
 const multerConfig: Options = {
-  dest: path.resolve(__dirname, '..', '..', '..', 'public', 'uploads'),
+  dest: path.resolve(__dirname, '..', '..', '..', 'public', 'files'),
   storage: multer.diskStorage({
     destination: (req, file, cb): void => {
-      cb(null, path.resolve(__dirname, '..', '..', '..', 'public', 'uploads'))
+      cb(null, path.resolve(__dirname, '..', '..', '..', 'public', 'files'))
     },
     filename: (req, file, cb): void => {
       crypto.randomBytes(16, (err, hash): void => {
