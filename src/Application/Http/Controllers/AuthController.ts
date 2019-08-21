@@ -9,7 +9,7 @@ class AuthController {
       const user = await UserService.signup(req.body)
       return res.status(HttpCodes.CREATED).json(user)
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 
@@ -18,7 +18,7 @@ class AuthController {
       const user = await UserService.authenticate(req.body)
       return res.status(HttpCodes.OK).json(user)
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 
@@ -30,7 +30,7 @@ class AuthController {
 
       return res.status(HttpCodes.NO_CONTENT).send()
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 
@@ -40,7 +40,7 @@ class AuthController {
 
       return res.status(HttpCodes.OK).json({ message: 'Password resetd successful' })
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 }

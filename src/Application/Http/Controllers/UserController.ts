@@ -9,7 +9,7 @@ class UserController {
       const users = await UserService.getUsers()
       return res.status(HttpCodes.OK).json(users)
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 
@@ -18,7 +18,7 @@ class UserController {
       const users = await UserService.createUser(req.body)
       return res.status(HttpCodes.OK).json(users)
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 
@@ -28,7 +28,7 @@ class UserController {
       const users = await UserService.editUser(id, req.body)
       return res.status(HttpCodes.OK).json(users)
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 }

@@ -10,14 +10,15 @@ import bcryptjs from 'bcryptjs'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import EmailService from './EmailService'
-import CustomException from './Resources/Exceptions/CustomException'
-import HttpCodes from '../Application/Http/HttpCodes'
-import HandleException from './Resources/Exceptions/HandleException'
 import User from '../Domain/Models/User'
+import HandleException from '../Application/Http/HttpExceptions/HandleException'
+import BadRequestException from '../Application/Http/HttpExceptions/BadRequestException'
+import UnauthorizedException from '../Application/Http/HttpExceptions/UnauthorizedException'
+import NotFoundException from '../Application/Http/HttpExceptions/NotFoundException'
 
 class UserService {
   private generateToken (params: IGenerateTokenParams): string {
-    return jwt.sign(params, process.env.AUTH_SECRET)
+    return jwt.sign(params, process.env.AUTH_SECRET, { expiresIn: process.env.TOKEN_EXPIRES })
   }
 
   private userExists (userData: ISignupRequest): Promise<boolean> {
@@ -51,7 +52,7 @@ class UserService {
         const userExists = await this.userExists(userData)
 
         if (userExists) {
-          throw new CustomException(HttpCodes.BAD_REQUEST, 'User already exists')
+          throw new BadRequestException({ message: 'Usuário já existe na base de dados' })
         }
 
         if (!userData.userType) {
@@ -80,7 +81,7 @@ class UserService {
         const userExists = await this.userExists(userData)
 
         if (userExists) {
-          throw new CustomException(HttpCodes.BAD_REQUEST, 'User already exists')
+          throw new BadRequestException({ message: 'Usuário já existe na base de dados' })
         }
 
         const hash = await bcryptjs.hash(password, 10)
@@ -127,14 +128,14 @@ class UserService {
         if (!user) {
           user = await User.findOne({ email: username }).select('+password')
           if (!user) {
-            throw new CustomException(HttpCodes.NOT_FOUND, 'User not found')
+            throw new NotFoundException({ message: 'Usuário não encontrado' })
           }
         }
 
         const isValid = await bcryptjs.compare(password, user.password)
 
         if (!isValid) {
-          throw new CustomException(HttpCodes.UNAUTHORIZED, 'Invalid password')
+          throw new UnauthorizedException({ message: 'Senha incorreta' })
         }
 
         const token = this.generateToken({ id: user._id })
@@ -154,7 +155,7 @@ class UserService {
         const user = await User.findOne({ email })
 
         if (!user) {
-          throw new CustomException(HttpCodes.NOT_FOUND, 'User not found')
+          throw new NotFoundException({ message: 'Usuário não encontrado' })
         }
 
         const token = crypto.randomBytes(20).toString('hex')
@@ -190,17 +191,17 @@ class UserService {
         const user = await User.findOne({ email }).select('+passwordResetToken passwordResetExpires email')
 
         if (!user) {
-          throw new CustomException(HttpCodes.NOT_FOUND, 'User not found')
+          throw new NotFoundException({ message: 'Usuário não encontrado' })
         }
 
         if (token !== user.passwordResetToken) {
-          throw new CustomException(HttpCodes.BAD_REQUEST, 'Invalid Token')
+          throw new BadRequestException({ message: 'Token de verificação inválido' })
         }
 
         const now = new Date()
 
         if (now > user.passwordResetExpires) {
-          throw new CustomException(HttpCodes.BAD_REQUEST, 'Token expired, please generate a new one')
+          throw new BadRequestException({ message: 'Token de verificação expirado! Gere um novo!' })
         }
 
         const newPassword = await bcryptjs.hash(password, 10)

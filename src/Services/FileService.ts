@@ -1,9 +1,10 @@
 import fs from 'fs'
-import HandleException from './Resources/Exceptions/HandleException'
+import HandleException from '../Application/Http/HttpExceptions/HandleException'
 import LogService from './LogService'
 import IFile from '../Domain/Interfaces/IFile'
 import File from '../Domain/Models/File'
 import IFileRequest from './Resources/Interfaces/Request/IFileRequest'
+import NotFoundException from '../Application/Http/HttpExceptions/NotFoundException'
 
 class FileService {
   public saveFromUpload (fileRequest: IFileRequest): Promise<IFile> {
@@ -28,10 +29,14 @@ class FileService {
     })
   }
 
-  public delete (fileId: string): Promise<void> {
+  public async delete (fileId: string): Promise<void> {
     return new Promise<void>(async (resolve, reject): Promise<void> => {
       try {
         const file = await File.findById(fileId)
+
+        if (!file) {
+          throw new NotFoundException({ message: 'Arquivo Não encontrado' })
+        }
 
         await file.remove()
 

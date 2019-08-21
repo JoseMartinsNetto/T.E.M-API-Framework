@@ -2,41 +2,44 @@ import jwt from 'jsonwebtoken'
 import { Response, NextFunction } from 'express'
 import ICustomRequest from '../../Configs/Interfaces/ICustomRequest'
 import IDecodedJWT from '../../../Services/Resources/Interfaces/IDecodedJWT'
-import HttpCodes from '../HttpCodes'
 import IMiddleware from '../../Configs/Interfaces/IMiddleware'
+import UnauthorizedException from '../HttpExceptions/UnauthorizedException'
 
 class AuthMiddleware implements IMiddleware {
   public intercepter (req: ICustomRequest, res: Response, next: NextFunction): NextFunction | Response | void{
-    const authHeader = req.headers.authorization
+    try {
+      const authHeader = req.headers.authorization
 
-    if (!authHeader) {
-      return res.status(HttpCodes.UNAUTHORIZED).json({ error: 'No Bearer token provided' })
-    }
-
-    const parts = authHeader.split(' ')
-    const isValid = parts.length === 2
-
-    if (!isValid) {
-      return res.status(HttpCodes.UNAUTHORIZED).json({ error: 'Invalid token authorization' })
-    }
-
-    const [scheme, token] = parts
-    const pattern = /Bearer/i
-    const test = pattern.test(scheme)
-
-    if (!test) {
-      return res.status(HttpCodes.UNAUTHORIZED).json({ error: 'Invalid Bearer token format' })
-    }
-
-    jwt.verify(token, process.env.AUTH_SECRET, (err, decoded: IDecodedJWT): void => {
-      if (err) {
-        res.status(HttpCodes.UNAUTHORIZED).json({ error: 'Invalid token' })
-        return
+      if (!authHeader) {
+        throw new UnauthorizedException({ message: 'Token de autenticação não fornecido!' })
       }
 
-      req.userId = decoded.id
-      next()
-    })
+      const parts = authHeader.split(' ')
+      const isValid = parts.length === 2
+
+      if (!isValid) {
+        throw new UnauthorizedException({ message: 'Token de autenticação inválido ou mal formatado!' })
+      }
+
+      const [scheme, token] = parts
+      const pattern = /Bearer/i
+      const test = pattern.test(scheme)
+
+      if (!test) {
+        throw new UnauthorizedException({ message: 'Token de autenticação inválido ou mal formatado!' })
+      }
+
+      jwt.verify(token, process.env.AUTH_SECRET, (err, decoded: IDecodedJWT): void => {
+        if (err) {
+          throw new UnauthorizedException({ message: 'Token de autenticação inválido ou expirado!' })
+        }
+
+        req.userId = decoded.id
+        next()
+      })
+    } catch (error) {
+      return res.status(error.code).json(error)
+    }
   }
 }
 

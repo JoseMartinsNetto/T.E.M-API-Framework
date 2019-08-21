@@ -1,6 +1,6 @@
 import App from './App'
 import LogService from '../Services/LogService'
-import IServerConfig from './Configs/IServerConfig'
+import IServerConfig from './Configs/Interfaces/IServerConfig'
 
 export default class Server {
   public config: IServerConfig

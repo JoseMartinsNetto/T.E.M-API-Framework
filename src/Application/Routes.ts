@@ -4,11 +4,8 @@ import UploadFileMiddleware from './Http/Middlewares/UploadFileMiddleware'
 import AuthController from './Http/Controllers/AuthController'
 import UserController from './Http/Controllers/UserController'
 import UploadFileController from './Http/Controllers/UploadFileController'
-import ErrorHandlingMiddleware from './Http/Middlewares/ErrorHandlingMiddleware'
 
 const routes = Router()
-
-routes.use(ErrorHandlingMiddleware)
 
 /** Auth */
 routes.post('/signup', AuthController.signup)

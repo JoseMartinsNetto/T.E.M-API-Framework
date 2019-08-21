@@ -1,3 +1,4 @@
+import { HttpExceptionBase } from './../HttpExceptions/HttpExceptionBase'
 import { Response } from 'express'
 
 import FileService from '../../../Services/FileService'
@@ -14,7 +15,7 @@ class UploadFileController {
       const file = await FileService.saveFromUpload(fileRequest)
       return res.status(HttpCodes.CREATED).json(file)
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 
@@ -23,7 +24,7 @@ class UploadFileController {
       const files = await FileService.getAll()
       return res.status(HttpCodes.OK).json(files)
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
   }
 
@@ -33,8 +34,13 @@ class UploadFileController {
       await FileService.delete(id)
       return res.status(HttpCodes.NO_CONTENT).send()
     } catch (error) {
-      return res.status(error.code).json(error.stack)
+      return res.status(error.code).json(error)
     }
+  }
+
+  public handle (res: Response, error: HttpExceptionBase) {
+    console.log('oi')
+    return res.status(error.code).json(error)
   }
 }
 
