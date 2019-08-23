@@ -11,12 +11,12 @@ import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import EmailService from './EmailService'
 import User from '../Domain/Models/User'
-import HandleException from '../Application/Http/HttpExceptions/HandleException'
 import BadRequestException from '../Application/Http/HttpExceptions/BadRequestException'
 import UnauthorizedException from '../Application/Http/HttpExceptions/UnauthorizedException'
 import NotFoundException from '../Application/Http/HttpExceptions/NotFoundException'
+import BaseService from './BaseService'
 
-class UserService {
+class UserService extends BaseService {
   private generateToken (params: IGenerateTokenParams): string {
     return jwt.sign(params, process.env.AUTH_SECRET, { expiresIn: process.env.TOKEN_EXPIRES })
   }
@@ -40,7 +40,7 @@ class UserService {
 
         return resolve(true)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -52,7 +52,7 @@ class UserService {
         const userExists = await this.userExists(userData)
 
         if (userExists) {
-          throw new BadRequestException({ message: 'Usuário já existe na base de dados' })
+          throw new BadRequestException('Usuário já existe na base de dados')
         }
 
         if (!userData.userType) {
@@ -69,7 +69,7 @@ class UserService {
 
         return resolve({ user, token })
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -81,7 +81,7 @@ class UserService {
         const userExists = await this.userExists(userData)
 
         if (userExists) {
-          throw new BadRequestException({ message: 'Usuário já existe na base de dados' })
+          throw new BadRequestException('Usuário já existe na base de dados')
         }
 
         const hash = await bcryptjs.hash(password, 10)
@@ -95,7 +95,7 @@ class UserService {
 
         return resolve(users)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -113,7 +113,7 @@ class UserService {
 
         return resolve(users)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -128,14 +128,14 @@ class UserService {
         if (!user) {
           user = await User.findOne({ email: username }).select('+password')
           if (!user) {
-            throw new NotFoundException({ message: 'Usuário não encontrado' })
+            throw new NotFoundException('Usuário não encontrado')
           }
         }
 
         const isValid = await bcryptjs.compare(password, user.password)
 
         if (!isValid) {
-          throw new UnauthorizedException({ message: 'Senha incorreta' })
+          throw new UnauthorizedException('Senha incorreta')
         }
 
         const token = this.generateToken({ id: user._id })
@@ -144,7 +144,7 @@ class UserService {
 
         return resolve({ user, token })
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -155,7 +155,7 @@ class UserService {
         const user = await User.findOne({ email })
 
         if (!user) {
-          throw new NotFoundException({ message: 'Usuário não encontrado' })
+          throw new NotFoundException('Usuário não encontrado')
         }
 
         const token = crypto.randomBytes(20).toString('hex')
@@ -179,7 +179,7 @@ class UserService {
         })
         return resolve(msg)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -191,17 +191,17 @@ class UserService {
         const user = await User.findOne({ email }).select('+passwordResetToken passwordResetExpires email')
 
         if (!user) {
-          throw new NotFoundException({ message: 'Usuário não encontrado' })
+          throw new NotFoundException('Usuário não encontrado')
         }
 
         if (token !== user.passwordResetToken) {
-          throw new BadRequestException({ message: 'Token de verificação inválido' })
+          throw new BadRequestException('Token de verificação inválido')
         }
 
         const now = new Date()
 
         if (now > user.passwordResetExpires) {
-          throw new BadRequestException({ message: 'Token de verificação expirado! Gere um novo!' })
+          throw new BadRequestException('Token de verificação expirado! Gere um novo!')
         }
 
         const newPassword = await bcryptjs.hash(password, 10)
@@ -210,7 +210,7 @@ class UserService {
         await user.save()
         return resolve()
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -221,7 +221,7 @@ class UserService {
         const users = await User.find()
         return resolve(users)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -232,7 +232,7 @@ class UserService {
         const user = await User.findById(userId)
         return resolve(user)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }

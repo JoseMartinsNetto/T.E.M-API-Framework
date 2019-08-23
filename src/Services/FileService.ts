@@ -1,19 +1,19 @@
 import fs from 'fs'
-import HandleException from '../Application/Http/HttpExceptions/HandleException'
 import LogService from './LogService'
 import IFile from '../Domain/Interfaces/IFile'
 import File from '../Domain/Models/File'
 import IFileRequest from './Resources/Interfaces/Request/IFileRequest'
 import NotFoundException from '../Application/Http/HttpExceptions/NotFoundException'
+import BaseService from './BaseService'
 
-class FileService {
+class FileService extends BaseService {
   public saveFromUpload (fileRequest: IFileRequest): Promise<IFile> {
     return new Promise<IFile>(async (resolve, reject): Promise<void> => {
       try {
         const file = await File.create(fileRequest)
         return resolve(file)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -24,7 +24,7 @@ class FileService {
         const files = await File.find()
         return resolve(files)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -35,14 +35,14 @@ class FileService {
         const file = await File.findById(fileId)
 
         if (!file) {
-          throw new NotFoundException({ message: 'Arquivo Não encontrado' })
+          throw new NotFoundException('Arquivo Não encontrado')
         }
 
         await file.remove()
 
         return resolve()
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -58,7 +58,7 @@ class FileService {
           return resolve()
         })
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
