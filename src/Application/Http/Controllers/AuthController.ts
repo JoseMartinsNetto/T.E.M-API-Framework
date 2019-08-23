@@ -38,7 +38,7 @@ class AuthController {
     try {
       await UserService.resetPassword(req.body)
 
-      return res.status(HttpCodes.OK).json({ message: 'Password resetd successful' })
+      return res.status(HttpCodes.OK).json({ message: 'Senha alterada com sucesso!' })
     } catch (error) {
       return res.status(error.code).json(error)
     }

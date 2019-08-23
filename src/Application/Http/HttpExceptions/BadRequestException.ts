@@ -1,10 +1,10 @@
 
-import { HttpExceptionBase, IHttpExceptionOptions } from './HttpExceptionBase'
+import HttpExceptionBase from './HttpExceptionBase'
 import HttpCodes from '../HttpCodes'
 
 class BadRequestException extends HttpExceptionBase {
-  public constructor (trace: IHttpExceptionOptions) {
-    super(trace)
+  public constructor (message: string) {
+    super(message)
     this.code = HttpCodes.BAD_REQUEST
     this.exceptionType = 'Bad Request Exception'
   }

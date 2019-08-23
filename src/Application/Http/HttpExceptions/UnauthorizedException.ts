@@ -1,9 +1,9 @@
-import { HttpExceptionBase, IHttpExceptionOptions } from './HttpExceptionBase'
+import HttpExceptionBase from './HttpExceptionBase'
 import HttpCodes from '../HttpCodes'
 
 class UnauthorizedException extends HttpExceptionBase {
-  public constructor (trace: IHttpExceptionOptions) {
-    super(trace)
+  public constructor (message: string) {
+    super(message)
     this.code = HttpCodes.UNAUTHORIZED
     this.exceptionType = 'Unauthorized Exception'
   }

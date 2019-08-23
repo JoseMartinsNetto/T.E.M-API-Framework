@@ -1,9 +1,9 @@
-import { HttpExceptionBase, IHttpExceptionOptions } from './HttpExceptionBase'
+import HttpExceptionBase from './HttpExceptionBase'
 import HttpCodes from '../HttpCodes'
 
 class ForbiddenException extends HttpExceptionBase {
-  public constructor (trace: IHttpExceptionOptions) {
-    super(trace)
+  public constructor (message: string) {
+    super(message)
     this.code = HttpCodes.FORBIDDEN
     this.exceptionType = 'Forbidden Exception'
   }

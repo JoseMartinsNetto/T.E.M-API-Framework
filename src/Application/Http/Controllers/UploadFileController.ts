@@ -1,4 +1,3 @@
-import { HttpExceptionBase } from './../HttpExceptions/HttpExceptionBase'
 import { Response } from 'express'
 
 import FileService from '../../../Services/FileService'
@@ -36,11 +35,6 @@ class UploadFileController {
     } catch (error) {
       return res.status(error.code).json(error)
     }
-  }
-
-  public handle (res: Response, error: HttpExceptionBase) {
-    console.log('oi')
-    return res.status(error.code).json(error)
   }
 }
 
