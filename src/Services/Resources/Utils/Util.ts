@@ -1,6 +1,6 @@
 class Util {
   public format (mask: string, value: string): string {
-    let s = '' + value
+    const s = '' + value
     let r = ''
     for (let im = 0, is = 0; im < mask.length && is < s.length; im++) {
       r += mask.charAt(im) === 'X' ? s.charAt(is++) : mask.charAt(im)

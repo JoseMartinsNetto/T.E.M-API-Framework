@@ -1,6 +1,6 @@
 import ISignupRequest from './Resources/Interfaces/Request/ISignupRequest'
 import IAuthRequest from './Resources/Interfaces/Request/IAuthRequest'
-import IAuthResponse from './Resources/Interfaces/Response/IAuthResponse';
+import IAuthResponse from './Resources/Interfaces/Response/IAuthResponse'
 import IGenerateTokenParams from './Resources/Interfaces/IGenerateTokenParams'
 import IEmailRequest from './Resources/Interfaces/IEmailRequest'
 import IResetPasswordRequest from './Resources/Interfaces/Request/IResetPasswordRequest'
@@ -10,14 +10,15 @@ import bcryptjs from 'bcryptjs'
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import EmailService from './EmailService'
-import CustomException from './Resources/Exceptions/CustomException'
-import HttpCodes from './Resources/Enums/HttpCodes'
-import HandleException from './Resources/Exceptions/HandleException'
 import User from '../Domain/Models/User'
+import BadRequestException from '../Application/Http/HttpExceptions/BadRequestException'
+import UnauthorizedException from '../Application/Http/HttpExceptions/UnauthorizedException'
+import NotFoundException from '../Application/Http/HttpExceptions/NotFoundException'
+import BaseService from './BaseService'
 
-class UserService {
+class UserService extends BaseService {
   private generateToken (params: IGenerateTokenParams): string {
-    return jwt.sign(params, process.env.AUTH_SECRET)
+    return jwt.sign(params, process.env.AUTH_SECRET, { expiresIn: process.env.TOKEN_EXPIRES })
   }
 
   private userExists (userData: ISignupRequest): Promise<boolean> {
@@ -39,7 +40,7 @@ class UserService {
 
         return resolve(true)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -51,7 +52,7 @@ class UserService {
         const userExists = await this.userExists(userData)
 
         if (userExists) {
-          throw new CustomException(HttpCodes.BAD_REQUEST, 'User already exists')
+          throw new BadRequestException('Usuário já existe na base de dados')
         }
 
         if (!userData.userType) {
@@ -68,7 +69,7 @@ class UserService {
 
         return resolve({ user, token })
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -80,7 +81,7 @@ class UserService {
         const userExists = await this.userExists(userData)
 
         if (userExists) {
-          throw new CustomException(HttpCodes.BAD_REQUEST, 'User already exists')
+          throw new BadRequestException('Usuário já existe na base de dados')
         }
 
         const hash = await bcryptjs.hash(password, 10)
@@ -94,7 +95,7 @@ class UserService {
 
         return resolve(users)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -104,8 +105,6 @@ class UserService {
       try {
         const user = await User.findById(userId)
 
-        user.categories = []
-
         await user.save()
 
         await User.findOneAndUpdate({ _id: userId }, userData)
@@ -114,7 +113,7 @@ class UserService {
 
         return resolve(users)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -129,14 +128,14 @@ class UserService {
         if (!user) {
           user = await User.findOne({ email: username }).select('+password')
           if (!user) {
-            throw new CustomException(HttpCodes.NOT_FOUND, 'User not found')
+            throw new NotFoundException('Usuário não encontrado')
           }
         }
 
         const isValid = await bcryptjs.compare(password, user.password)
 
         if (!isValid) {
-          throw new CustomException(HttpCodes.UNAUTHORIZED, 'Invalid password')
+          throw new UnauthorizedException('Senha incorreta')
         }
 
         const token = this.generateToken({ id: user._id })
@@ -145,7 +144,7 @@ class UserService {
 
         return resolve({ user, token })
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -156,7 +155,7 @@ class UserService {
         const user = await User.findOne({ email })
 
         if (!user) {
-          throw new CustomException(HttpCodes.NOT_FOUND, 'User not found')
+          throw new NotFoundException('Usuário não encontrado')
         }
 
         const token = crypto.randomBytes(20).toString('hex')
@@ -180,7 +179,7 @@ class UserService {
         })
         return resolve(msg)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -192,17 +191,17 @@ class UserService {
         const user = await User.findOne({ email }).select('+passwordResetToken passwordResetExpires email')
 
         if (!user) {
-          throw new CustomException(HttpCodes.NOT_FOUND, 'User not found')
+          throw new NotFoundException('Usuário não encontrado')
         }
 
         if (token !== user.passwordResetToken) {
-          throw new CustomException(HttpCodes.BAD_REQUEST, 'Invalid Token')
+          throw new BadRequestException('Token de verificação inválido')
         }
 
         const now = new Date()
 
         if (now > user.passwordResetExpires) {
-          throw new CustomException(HttpCodes.BAD_REQUEST, 'Token expired, please generate a new one')
+          throw new BadRequestException('Token de verificação expirado! Gere um novo!')
         }
 
         const newPassword = await bcryptjs.hash(password, 10)
@@ -211,7 +210,7 @@ class UserService {
         await user.save()
         return resolve()
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -222,7 +221,7 @@ class UserService {
         const users = await User.find()
         return resolve(users)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }
@@ -233,7 +232,7 @@ class UserService {
         const user = await User.findById(userId)
         return resolve(user)
       } catch (error) {
-        return reject(HandleException.handle(error))
+        return reject(this.handleError(error))
       }
     })
   }

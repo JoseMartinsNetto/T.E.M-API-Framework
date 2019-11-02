@@ -1,23 +1,26 @@
 import { Router } from 'express'
-import AuthController from './Controllers/AuthController'
-import AuthMiddleware from './Middlewares/AuthMiddleware'
-import UserController from './Controllers/UserController'
-import HomeController from './Controllers/HomeController'
+import AuthMiddleware from './Http/Middlewares/AuthMiddleware'
+import UploadFileMiddleware from './Http/Middlewares/UploadFileMiddleware'
+import AuthController from './Http/Controllers/AuthController'
+import UserController from './Http/Controllers/UserController'
+import UploadFileController from './Http/Controllers/UploadFileController'
 
 const routes = Router()
 
 /** Auth */
-routes.post('/api/signup', AuthController.signup)
-routes.post('/api/authenticate', AuthController.authenticate)
-routes.post('/api/forgot-password', AuthController.forgotPassword)
-routes.patch('/api/reset-password', AuthController.resetPassword)
+routes.post('/signup', AuthController.signup)
+routes.post('/authenticate', AuthController.authenticate)
+routes.post('/forgot-password', AuthController.forgotPassword)
+routes.patch('/reset-password', AuthController.resetPassword)
 
 /** User */
-routes.get('/api/users', AuthMiddleware, UserController.index)
-routes.post('/api/users', AuthMiddleware, UserController.store)
-routes.put('/api/users/:id', AuthMiddleware, UserController.edit)
+routes.get('/users', [AuthMiddleware], UserController.index)
+routes.post('/users', [AuthMiddleware], UserController.store)
+routes.put('/users/:id', [AuthMiddleware], UserController.edit)
 
-/** Home */
-routes.get('*', HomeController.index)
+/** Upload  for exemple */
+routes.post('/upload', [AuthMiddleware, UploadFileMiddleware], UploadFileController.upload)
+routes.get('/files', [AuthMiddleware, UploadFileMiddleware], UploadFileController.index)
+routes.delete('/files/:id', [AuthMiddleware], UploadFileController.delete)
 
 export default routes

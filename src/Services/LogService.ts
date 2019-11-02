@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-class LogService {
+import BaseService from './BaseService'
+
+class LogService extends BaseService {
   public logIntoConsole (content: any, obj?: any): void{
     if (obj) {
       console.log(content, obj)

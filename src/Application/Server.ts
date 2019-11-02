@@ -1,14 +1,19 @@
 import App from './App'
 import LogService from '../Services/LogService'
+import IServerConfig from './Configs/Interfaces/IServerConfig'
 
-function run (): void {
-  const port = process.env.PORT || 3333
-  const appUrl = process.env.APP_URL || 'http://localhost'
-  App.listen(port)
+export default class Server {
+  public config: IServerConfig
 
-  LogService.clearLog('console')
+  public constructor (config: IServerConfig) {
+    this.config = config
+  }
 
-  LogService.logIntoConsole(`Server started at ${appUrl}:${port}/`)
+  public run () {
+    App.listen(this.config.port)
+
+    LogService.clearLog('console')
+
+    LogService.logIntoConsole(`Server started at ${this.config.appUrl}:${this.config.port}/`)
+  }
 }
-
-run()

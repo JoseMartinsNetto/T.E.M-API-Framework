@@ -1,7 +1,8 @@
 import SendGrid from '@sendgrid/mail'
 import IEmailRequest from './Resources/Interfaces/IEmailRequest'
+import BaseService from './BaseService'
 
-class EmailService {
+class EmailService extends BaseService {
   public async sendMail (data: IEmailRequest): Promise<IEmailRequest> {
     return new Promise<IEmailRequest>(async (resolve, reject): Promise<void> => {
       try {
@@ -14,7 +15,7 @@ class EmailService {
         await SendGrid.send(data)
         return resolve(data)
       } catch (error) {
-        return reject(error)
+        return reject(this.handleError(error))
       }
     })
   }

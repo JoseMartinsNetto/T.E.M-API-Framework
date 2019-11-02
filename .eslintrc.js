@@ -5,11 +5,7 @@ module.exports = {
     node: true
   },
   plugins: ['@typescript-eslint'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'prettier/@typescript-eslint',
-    'standard'
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'prettier/@typescript-eslint', 'standard'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -20,6 +16,9 @@ module.exports = {
   },
   rules: {
     '@typescript-eslint/interface-name-prefix': ['error', 'always'],
-    'no-async-promise-executor': ['never']
+    'no-async-promise-executor': ['off'],
+    'lines-between-class-members': ['off'],
+    '@typescript-eslint/explicit-function-return-type': ['off'],
+    'no-new': ['off']
   }
 }

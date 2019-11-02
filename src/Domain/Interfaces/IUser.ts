@@ -1,5 +1,4 @@
 import { Document } from 'mongoose'
-import ICategory from './ICategory'
 
 export default interface IUser extends Document{
     name: string;
@@ -8,9 +7,7 @@ export default interface IUser extends Document{
     phone: string;
     userType: string;
     cellPhone?: string;
-    expensionLine?: number;
     password: string;
     passwordResetToken?: string;
     passwordResetExpires?: Date;
-    categories: []
 }

@@ -65,3 +65,4 @@ typings/
 !.elasticbeanstalk/*.global.yml
 /build
 /dist
+/public/files
