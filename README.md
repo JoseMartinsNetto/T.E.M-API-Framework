@@ -9,7 +9,7 @@ What TEM API Framework means ?
 Is a backend project strongly based on DDD principles and .NET framework core.
 
 
-Firs of all install the dependecies with:
+First of all install the dependecies with:
 
     npm install or yarn install
 
